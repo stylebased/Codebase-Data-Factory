@@ -1,0 +1,19 @@
+# Core
+python-dotenv>=1.0.0
+tqdm>=4.66.0
+rich>=13.7.0
+requests>=2.31.0
+
+# Data handling
+jsonlines>=4.0.0
+
+# HuggingFace pipeline + local inference support
+transformers>=4.39.0
+accelerate>=0.27.0
+sentencepiece>=0.1.99
+
+# PyTorch (CPU by default; GPU users can install their own build)
+torch>=2.1.0
+
+# Optional: used for generating files / docs
+pypandoc>=1.12
