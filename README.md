@@ -58,6 +58,11 @@ Detailed documentation is available in the `docs/` directory:
 
 ##📦 Requirements
 
+```bash
+# Clone the repository
+git clone https://github.com/your-username/local-repo-trainer.git
+cd local-repo-trainer
+
 This project uses Python 3.9+.
 
 Install dependencies using:
