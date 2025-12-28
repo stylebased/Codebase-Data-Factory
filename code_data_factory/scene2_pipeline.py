@@ -1,6 +1,6 @@
-
+# -*- coding: utf-8 -*-
 """
-Scene 2: Generate system / architectural design proposals based on a project structure.
+场景 2：系统 / 架构设计生成（注释已改为中文）
 """
 
 from __future__ import annotations
@@ -19,6 +19,7 @@ SCENE2_RAW_PATH = OUTPUT_DIR / "scene2_raw.jsonl"
 
 
 def load_project_skeleton() -> List[str]:
+    """加载项目骨架文件列表"""
     if not SKELETON_JSON_PATH.exists():
         raise FileNotFoundError(f"Project skeleton not found: {SKELETON_JSON_PATH}")
     with SKELETON_JSON_PATH.open("r", encoding="utf-8") as f:
@@ -144,7 +145,7 @@ def generate_scene2(
     sample_file_count: int = 20,
     dry_run: Optional[bool] = None,
 ) -> int:
-    """Generate Scene-2 design data."""
+    """主流程"""
     files = load_project_skeleton()
     if not files:
         print("[Scene2] No project files found in project_skeleton.json")
