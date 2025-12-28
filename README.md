@@ -54,6 +54,8 @@ Detailed documentation is available in the `docs/` directory:
 
 - Python 3.9+
 
+---
+
 ##📦 Requirements
 
 This project uses Python 3.9+.
