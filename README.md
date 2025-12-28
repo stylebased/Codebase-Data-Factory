@@ -1,158 +1,87 @@
-# interview_homework
-Codebase Data Factory
+# Local Repo Intelligent Training Data Generator
 
-A framework for automatically generating high-quality training datasets from real software projects — including:
+A specialized tool designed to automate the generation of high-quality **Supervised Fine-Tuning (SFT)** datasets from local code repositories. This system is built to help Large Language Models (like Qwen 3) understand specific business rules and architectural patterns within a private codebase.
 
-Code Understanding (Q&A)
+## 📚 Documentation
 
-System Design / Architecture Reasoning
+Detailed documentation is available in the `docs/` directory:
 
-The pipeline:
+*   **[Design Document](docs/design_doc.md)**: System architecture, dataset schema, and generation strategies.
+*   **[Configuration Guide](docs/configuration.md)**: Detailed explanation of environment variables and settings.
 
-Analyzes an existing codebase
+## ✨ Key Features
 
-Extracts structure and code snippets
+### 1. Business Process & Rule Q&A (Scenario 1)
+Extracts business logic from code chunks and generates "Question-Reasoning-Answer" triplets.
+- **Goal**: Teach the model *why* the code works the way it does.
+- **Format**: Includes strictly formatted `thinking_trace` to improve model reasoning capabilities.
 
-Prompts an LLM to generate realistic tasks
+### 2. Architectural Design Proposal (Scenario 2)
+Simulates new feature requirements and asks the model to design a solution that fits the existing project architecture.
+- **Context**: Injects a compressed "Project Skeleton" and dependency list.
+- **Style Matching**: Uses few-shot prompting with real code snippets to ensure the generated design matches the project's coding style.
 
-Outputs structured datasets suitable for SFT (Supervised Fine-Tuning)
+## 🚀 Usage
 
-✨ Features
+### Prerequisites
+- Python 3.9+
+- An OpenAI-compatible API Key (e.g., OpenRouter, OpenAI)
 
-✔ Analyze any local or open-source repository
+### Installation
+```bash
+# Clone the repository
+git clone https://github.com/your-username/local-repo-trainer.git
+cd local-repo-trainer
 
-✔ Two realistic scenarios
+# Install dependencies
+pip install requests flask
+```
 
-Scene-1: Code Q&A (understanding + reasoning)
-
-Scene-2: System design + architecture planning
-
-✔ JSONL datasets for training
-
-✔ DRY-RUN testing mode (no LLM required)
-
-✔ Modular and extendable
-
-📂 Project Structure
-code_data_factory/
- ├── analyzer.py          # Analyze repository, extract structure + code chunks
- ├── scene1_pipeline.py   # Generate Code Q&A dataset
- ├── scene2_pipeline.py   # Generate System Design dataset
- ├── postprocess.py       # Clean + merge into final SFT dataset
- ├── llm_client.py        # Wrapper for local / HF / OpenAI models
- ├── config.py            # Configuration settings
- └── cli.py               # Command-line interface
+### Configuration
+The project uses `backend/config.py` for configuration.
 
 
-Generated data appears under:
+> **API Configuration is Required**: You **MUST** configure your LLM API settings in `backend/config.py` before running the actual generation.
+> *   Set `OPENAI_API_KEY` (or export it as an env var).
+> *   Set `OPENAI_BASE_URL` if you are using a non-OpenAI provider (e.g., OpenRouter, local vLLM).
+> *   Set `MODEL_NAME` to your desired model (default: `google/gemini-2.5-flash`).
 
-data/
- ├── project_skeleton.txt
- ├── project_skeleton.json
- ├── chunks.json
- ├── scene1_raw.jsonl
- ├── scene1_sft.jsonl
- ├── scene2_raw.jsonl
- ├── scene2_sft.jsonl
- └── combined_sft.jsonl
+You can override settings using environment variables. See **[Configuration Guide](docs/configuration.md)** for a full list of options (e.g., `TARGET_REPO_PATH`, `MODEL_NAME`, `CHUNK_TOKEN_LIMIT`).
 
-🛠 Installation
+### Running the Generator
 
-Clone the repository:
+**1. Generate Business Q&A Data (Scenario 1)**
+```bash
+# Dry-run (no API cost, uses mock data)
+python run.py scene1 --limit 5 --dry-run
 
-git clone YOUR_REPO_URL
-cd codebase-data-factory
+# Actual Generation
+export OPENAI_API_KEY="sk-..."
+python run.py scene1 --limit 100 --qa-count 3
+```
 
+**2. Generate Architecture Design Data (Scenario 2)**
+```bash
+# Dry-run
+python run.py scene2 --count 2 --dry-run
 
-Create a virtual environment:
+# Actual Generation
+python run.py scene2 --count 50
+```
 
-python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+**3. Start Web UI (Optional)**
+```bash
+python run.py serve
+```
 
-🎯 Select a Target Codebase
+## 📂 Output
 
-Clone any project you want to analyze, for example:
+Generated datasets are saved in the `data/` directory:
 
-git clone https://github.com/halo-dev/halo.git halo-main
+| File | Description |
+| :--- | :--- |
+| **`data/combined_sft.jsonl`** | **The Final Output**. This contains the merged and SFT-formatted data from both scenarios, ready for model fine-tuning. |
+| `data/scene1_sft.jsonl` | SFT-formatted data for Business Q&A only. |
+| `data/scene2_sft.jsonl` | SFT-formatted data for Architecture Design only. |
+| `data/project_skeleton.txt` | The extracted directory tree of the target repo. |
 
-
-Set environment variable:
-
-export TARGET_REPO_PATH=/path/to/halo-main
-
-
-Windows PowerShell:
-
-setx TARGET_REPO_PATH "C:\path\to\halo-main"
-
-🧪 DRY-RUN Mode (Recommended First)
-
-Run everything without calling an actual LLM:
-
-export DRY_RUN=1
-
-
-This tests pipeline logic safely.
-
-🚀 Usage
-1️⃣ Analyze repository
-python main.py analyze
-
-2️⃣ Generate Scene-1 (Code Q&A)
-python main.py scene1 --limit 20 --qa-count 3 --dry-run
-
-3️⃣ Generate Scene-2 (System Design)
-python main.py scene2 --count 5 --dry-run
-
-4️⃣ Post-process and merge datasets
-python main.py postprocess
-
-🤖 Using a Real LLM (Optional)
-Option A — HuggingFace Local Model
-export DRY_RUN=0
-export HF_MODEL_NAME="Qwen/Qwen2.5-7B-Instruct"
-
-Option B — OpenAI-Compatible API
-export DRY_RUN=0
-export USE_OPENAI=1
-export OPENAI_API_KEY=YOUR_KEY
-
-📌 Output Overview
-File	Description
-project_skeleton.*	Compressed view of project structure
-chunks.json	Extracted code segments
-scene1_raw.jsonl	Raw Q&A responses
-scene1_sft.jsonl	Cleaned dataset for Scene-1
-scene2_raw.jsonl	Raw architecture designs
-scene2_sft.jsonl	Cleaned dataset for Scene-2
-combined_sft.jsonl	Final merged dataset
-✅ Why This Project Matters
-
-This pipeline demonstrates:
-
-automated dataset creation
-
-support for multiple training tasks
-
-realistic development scenarios
-
-structured, reusable design
-
-explainable outputs (thinking traces included)
-
-ability to run without a model first (dry-run)
-
-⚠️ Notes
-
-Large repositories may take time to process
-
-Avoid scanning folders like:
-
-node_modules
-build
-dist
-.git
-
-
-Always test using DRY_RUN first
