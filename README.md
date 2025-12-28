@@ -102,4 +102,14 @@ data/
 ```
 The final training dataset combined_sft.jsonl contains both Scene-1 and Scene-2 samples.
 
+## 📦 Example Output
 
+Generated dataset samples include:
+
+-- Business questions about real code behavior
+
+-- Reasoning traces showing how answers were derived
+
+-- Structured architectural design proposals with context
+
+These samples can be used directly for supervised fine-tuning of LLMs.
