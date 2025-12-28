@@ -1,6 +1,11 @@
-# Local Repo Intelligent Training Data Generator
+# Codebase Data Factory
 
-A specialized tool designed to automate the generation of high-quality **Supervised Fine-Tuning (SFT)** datasets from local code repositories. This system is built to help Large Language Models (like Qwen 3) understand specific business rules and architectural patterns within a private codebase.
+An automated pipeline to generate high-quality SFT training datasets from local code repositories.  
+This system focuses on two core scenarios:
+
+1. **Business Logic Q&A Generation (Scene-1)**  
+2. **Architectural Design Proposal Generation (Scene-2)**
+
 
 ## 📚 Documentation
 
