@@ -89,6 +89,16 @@ python3 main.py scene2 --count 50
 ```
 ## 📁 Output Directory
 Generated files are saved under:
-
+```bash
+data/
+├── scene1_raw.jsonl          # Raw Scene-1 outputs
+├── scene1_sft.jsonl          # Cleaned Scene-1 dataset
+├── scene2_raw.jsonl          # Raw Scene-2 outputs
+├── scene2_sft.jsonl          # Cleaned Scene-2 dataset
+├── combined_sft.jsonl        # Merged dataset for fine-tuning
+├── project_skeleton.txt
+├── project_skeleton.json
+└── chunks.json
+```
 
 
