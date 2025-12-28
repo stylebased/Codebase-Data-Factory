@@ -87,6 +87,13 @@ python3 main.py scene2 --count 2 --dry-run
 # Actual generation
 python3 main.py scene2 --count 50
 ```
+## Run the code in order
+```bash
+python3 main.py analyze
+python3 main.py scene1 --limit 10 --qa-count 2 --dry-run
+python3 main.py scene2 --count 3 --dry-run
+python3 main.py postprocess
+```
 ## 📁 Output Directory
 Generated files are saved under:
 ```bash
