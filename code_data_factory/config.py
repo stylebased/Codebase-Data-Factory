@@ -3,7 +3,7 @@ import os
 
 # 目标代码仓路径：你可以改默认值，或用环境变量覆盖
 TARGET_REPO_PATH = Path(
-    os.getenv("TARGET_REPO_PATH", "../halo-main")  # TODO: 改成你自己的代码仓路径
+    os.getenv("TARGET_REPO_PATH", "../folder_name")  # TODO: 改成你自己的代码仓路径
 ).resolve()
 
 # 输出目录
@@ -21,7 +21,7 @@ SUPPORTED_EXTS = {
 MAX_CHUNK_CHARS = int(os.getenv("MAX_CHUNK_CHARS", "4000"))
 
 # 模型配置（HuggingFace）
-HF_MODEL_NAME = os.getenv("HF_MODEL_NAME", "Qwen/Qwen2.5-7B-Instruct")
+HF_MODEL_NAME = os.getenv("HF_MODEL_NAME", "Qwen/Qwen2.5-7B")
 MAX_NEW_TOKENS = int(os.getenv("MAX_NEW_TOKENS", "768"))
 TEMPERATURE = float(os.getenv("TEMPERATURE", "0.35"))
 
